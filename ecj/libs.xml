@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="libs" name="libs">
+
+	<property name="dir.lib"   value="lib"/>
+	<property name="dir.cache" value="${dir.lib}/cache"/>
+	<property name="url.sf"    value="http://downloads.sourceforge.net/project"/>
+
+	<!-- Library versions -->
+	<property name="ver.jzlib"      value="1.0.7" />
+
+	<target name="libs" description="Fetches required libraries">
+		<!-- Download JARs and TARs cache -->
+		<mkdir dir="${dir.cache}"/>
+		<get src="http://www.jcraft.com/jzlib/jzlib-${ver.jzlib}.tar.gz"
+			 dest="${dir.lib}/cache/jzlib-${ver.jzlib}.tar.gz"
+			 verbose="on" usetimestamp="on"/>
+
+		<!-- Extract sources -->
+		<gunzip src="${dir.lib}/cache/jzlib-${ver.jzlib}.tar.gz"/>
+		<untar src="${dir.lib}/cache/jzlib-${ver.jzlib}.tar"
+		       dest="${dir.lib}">
+		</untar>
+		<delete file="${dir.lib}/cache/jzlib-${ver.jzlib}.tar"/>
+
+		<!-- Compile sources -->
+		<mkdir dir="${dir.lib}/jzlib-${ver.jzlib}/obj"/>
+		<javac srcdir="${dir.lib}/jzlib-${ver.jzlib}/com"
+			   destdir="${dir.lib}/jzlib-${ver.jzlib}/obj"
+			   source="1.2" target="1.2" optimize="on"/>
+		<jar destfile="${dir.lib}/jzlib-${ver.jzlib}.jar"
+			 basedir="${dir.lib}/jzlib-${ver.jzlib}/obj"/>
+
+		<!-- Cleanup and move JAR -->
+		<delete dir="${dir.lib}/jzlib-${ver.jzlib}"/>
+		<mkdir  dir="${dir.lib}/jzlib-${ver.jzlib}"/>
+		<move file="${dir.lib}/jzlib-${ver.jzlib}.jar"
+			  tofile="${dir.lib}/jzlib-${ver.jzlib}/jzlib-${ver.jzlib}.jar"/>
+	</target>
+
+</project>

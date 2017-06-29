@@ -1,0 +1,93 @@
+### ec.Evolve
+
+# totally verbose
+verbosity				= 0
+# flush output immediately
+flush					= true
+# store announcements in memory
+store					= true
+
+# number of breeding and evaluating threads
+# NOTE: as long as both are 1, no new threads are created,
+# otherwise *everything* happens in new threads
+breedthreads			= 2
+evalthreads 			= 2
+
+# random seed for threads (can be 'time')
+# num(seeds) >= max(breedthreads,evalthreads)
+seed.0					= time
+seed.1					= time
+seed.2					= time
+seed.3					= time
+
+# simple generational evolution
+state					= ec.simple.SimpleEvolutionState
+
+
+### ec.EvolutionState
+
+# if 'true', create a checkpoint every modulo generations
+checkpoint				= false
+checkpoint-modulo		= 50
+
+# standard initialization
+init					= ec.simple.SimpleInitializer
+
+# standard (empty) finalization
+finish					= ec.simple.SimpleFinisher
+
+# standard breeding -- no cross-population breeding
+breed					= ec.simple.SimpleBreeder
+
+# standard evaluation -- no coevolution
+eval					= ec.simple.SimpleEvaluator
+
+# standard (empty) exchange method
+exch					= ec.simple.SimpleExchanger
+
+# simple statistics
+stat					= esi.finch.ecj.bc.BytecodeStatistics
+
+# population
+pop								= ec.Population
+pop.subpops						= 1
+
+# subpopulation
+pop.subpop.0					= ec.Subpopulation
+ec.subpop.size					= 50
+ec.subpop.duplicate-retries		= 0
+ec.subpop.species				= esi.finch.ecj.immutable.ImmutableSpecies
+breed.elite.0					= 5
+
+# representation & fitness
+immutable.species.fitness		= ec.simple.SimpleFitness
+immutable.species.ind			= esi.finch.ecj.bc.BytecodeIndividual
+immutable.species.xo-prob		= 0.9
+immutable.species.mut-prob		= 0.01
+bytecode.prob.timeout			= 5000
+
+# instruction mutator parameters
+insn.mut.allowed = true		
+# If false, all mutations have the same probability
+insn.mut.custom-distrib = true
+insn.mut.deletion = 0.333
+insn.mut.copy = 0.334
+insn.mut.insert = 0.0
+insn.mut.move = 0.333
+insn.mut.replace = 0.0
+# Replacement always swaps in an instruction of the same type
+insn.mut.replace-sensitive = false
+
+# breeding pipeline
+pop.subpop.0.species.pipe					= esi.finch.ecj.immutable.ImmutableMutationPipeline
+pop.subpop.0.species.pipe.source.0			= esi.finch.ecj.immutable.ImmutableCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0	= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= same
+select.tournament.size						= 4
+
+# run for given number of generations, quit prematurely on ideal individual
+generations				= 25
+quit-on-run-complete	= true
+
+# statistics file
+stat.gzip				= false

@@ -1,0 +1,15 @@
+parent.0				= ../ecj/bc/bytecode.params
+
+# major parameters change
+breed.elite.0				= 1
+
+# bytecode invidividual and its evaluator
+bytecode.ind.max-growth			= 2.0
+bytecode.ind.class			= esi.finch.probs.InsertionSort
+bytecode.ind.method-desc		= ([I)[I
+bytecode.ind.method-name		= sort
+bytecode.ind.xo-class			= esi.finch.xo.UniformCrossoverFinder
+bytecode.ind.mut-class			= esi.finch.mut.UniformConstantsMutator
+bytecode.prob.eval-class		= esi.finch.probs.InsertionSortEvaluator
+bytecode.prob.steps			= 10000
+bytecode.prob.timeout			= 5000

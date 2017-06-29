@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." name="build">
+
+    <property name="dir.util"     value="util"     />
+	<property name="dir.asm"      value="asm"      />
+	<property name="dir.bc"       value="bc"       />
+	<property name="dir.ecj"      value="ecj"      />
+	<property name="dir.finch"    value="finch"    />
+
+	<target name="libs" description="Fetches required libraries for all projects">
+        <ant dir="${dir.util}"    antfile="libs.xml" />
+		<ant dir="${dir.bc}"      antfile="libs.xml" />
+		<ant dir="${dir.ecj}"     antfile="libs.xml" />
+	</target>
+
+</project>

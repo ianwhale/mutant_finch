@@ -1,0 +1,15 @@
+parent.0	=	../ecj/bc/bytecode.params
+
+# major parameters change
+breedthreads					= 1
+evalthreads 					= 1
+ec.subpop.size					= 60
+
+# bytecode invidividual and its evaluator
+bytecode.ind.class				= esi.finch.probs.BytecodeTestProblem
+bytecode.ind.method-name		= product
+bytecode.ind.xo-class			= esi.finch.xo.GaussianCrossoverFinder
+bytecode.ind.max-growth			= 2.0
+
+bytecode.prob.eval-class		= esi.finch.probs.BytecodeTestProblemEvaluator
+bytecode.prob.steps				= 5000

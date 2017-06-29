@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="libs" name="libs">
+
+	<property name="dir.lib"    value="lib"/>
+	<property name="dir.cache"  value="${dir.lib}/cache"/>
+	<property name="url.kbeck"  value="http://cloud.github.com/downloads/KentBeck"/>
+	<property name="url.apache" value="http://apache.spd.co.il"/>
+
+	<!-- Library versions -->
+	<property name="ver.junit"   value="4.8.2"/>
+	<property name="ver.cli"     value="1.2"/>
+	<property name="ver.logging" value="1.1.1"/>
+
+	<target name="libs" description="Fetches required libraries">
+		<!-- Download JARs and TARs into cache -->
+		<mkdir dir="${dir.cache}"/>
+		<get src="${url.kbeck}/junit/junit-${ver.junit}.jar"
+			 dest="${dir.lib}/cache/junit-${ver.junit}.jar"
+			 verbose="on" usetimestamp="on"/>
+        <get src="${url.apache}/commons/cli/binaries/commons-cli-${ver.cli}-bin.tar.gz"
+			 dest="${dir.lib}/cache/commons-cli-${ver.cli}-bin.tar.gz"
+			 verbose="on" usetimestamp="on"/>
+        <get src="${url.apache}/commons/logging/binaries/commons-logging-${ver.logging}-bin.tar.gz"
+			 dest="${dir.lib}/cache/commons-logging-${ver.logging}-bin.tar.gz"
+			 verbose="on" usetimestamp="on"/>
+
+
+		<!-- Copy JAR -->
+		<mkdir dir="${dir.lib}/junit-${ver.junit}"/>
+		<copy file="${dir.lib}/cache/junit-${ver.junit}.jar"
+			  tofile="${dir.lib}/junit-${ver.junit}/junit-${ver.junit}.jar"/>
+
+  		<!-- Extract JARs from TARs -->
+		<gunzip src="${dir.lib}/cache/commons-cli-${ver.cli}-bin.tar.gz"/>
+		<gunzip src="${dir.lib}/cache/commons-logging-${ver.logging}-bin.tar.gz"/>
+   		<untar src="${dir.lib}/cache/commons-cli-${ver.cli}-bin.tar"
+		       dest="${dir.lib}">
+			<patternset>
+				<include name="commons-cli-${ver.cli}/commons-cli-${ver.cli}.jar"/>
+			</patternset>
+		</untar>
+   		<untar src="${dir.lib}/cache/commons-logging-${ver.logging}-bin.tar"
+		       dest="${dir.lib}">
+			<patternset>
+				<include name="commons-logging-${ver.logging}/commons-logging-${ver.logging}.jar"/>
+			</patternset>
+		</untar>
+
+        <!-- Cleanup -->
+		<delete file="${dir.lib}/cache/commons-cli-${ver.cli}-bin.tar"/>
+		<delete file="${dir.lib}/cache/commons-logging-${ver.logging}-bin.tar"/>
+	</target>
+
+</project>

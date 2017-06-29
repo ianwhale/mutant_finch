@@ -1,0 +1,20 @@
+parent.0						= ../../ecj/bc/bytecode.params
+
+# Change to Competitive Evaluator with single-elimination tournament
+eval							= ec.coevolve.CompetitiveEvaluator
+eval.style						= single-elim-tournament
+
+# major parameters change
+ec.subpop.size					= 2048
+breed.elite.0					= 7
+generations						= 16
+immutable.species.xo-prob		= 0.8
+
+# bytecode invidividual and its evaluator
+bytecode.ind.class				= esi.finch.probs.ttt.FinchPlayer
+bytecode.ind.method-name		= negamaxAB
+bytecode.ind.xo-class			= esi.finch.xo.FixedGaussianCrossoverFinder
+bytecode.ind.max-growth			= 2.0
+
+bytecode.prob.eval-class		= esi.finch.probs.ttt.TicTacToeEvaluator
+bytecode.prob.steps				= 500000

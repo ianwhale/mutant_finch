@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="jasmin" name="jasmin">
+
+	<property name="dir.src"    value="src" />
+	<property name="dir.test"   value="test"/>
+	<property name="dir.build"  value="obj" />
+
+	<property name="jar.jasmin" value="lib/jasmin-2.4/jasmin-2.4.jar"/>
+
+	<!-- Set of Jasmin sources -->
+	<path id="jasmin.base">
+		<pathelement path="."/>
+	</path>
+	<fileset dir="." id="jasmin.src">
+		<include name="${dir.src}/**/*.j"/>
+		<include name="${dir.test}/**/*.j"/>
+	</fileset>
+
+	<!-- Convert set of sources to a list of relative paths -->
+	<pathconvert property="jasmin.base.path" refid="jasmin.base"/>
+	<pathconvert property="jasmin.src.list" refid="jasmin.src" pathsep=" ">
+		<map from="${jasmin.base.path}${file.separator}" to=""/>
+	</pathconvert>
+
+	<!-- Whether to run compilation at all -->
+	<condition property="jBuild.notRequired">
+		<uptodate>
+			<srcfiles refid="jasmin.src"/>
+			<mapper>
+				<globmapper from="${dir.src}/*.j"  to="${dir.build}/*.class" handledirsep="yes"/>
+				<globmapper from="${dir.test}/*.j" to="${dir.build}/*.class" handledirsep="yes"/>
+			</mapper>
+		</uptodate>
+	</condition>
+
+	<!-- Compile all Jasmin sources -->
+	<!-- ANT is not strong enough to compile only the changed sources
+		 without writing a custom task in Java -->
+	<target name="jasmin" unless="jBuild.notRequired">
+		<java classname="jasmin.Main" failonerror="true">
+			<arg value="-d"/>
+			<arg value="${dir.build}"/>
+			<arg line="${jasmin.src.list}"/>
+
+			<classpath>
+				<pathelement location="${jar.jasmin}"/>
+			</classpath>
+		</java>
+	</target>
+
+</project>

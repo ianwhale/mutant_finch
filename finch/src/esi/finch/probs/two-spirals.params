@@ -1,0 +1,17 @@
+parent.0	=	../ecj/bc/bytecode.params
+
+# major parameters change
+immutable.species.mut-prob		= 0.1
+immutable.species.xo-prob		= 0.8
+ec.subpop.size					= 2000
+breed.elite.0					= 0
+generations						= 251
+
+# bytecode invidividual and its evaluator
+bytecode.ind.class				= esi.finch.probs.TwoSpirals
+bytecode.ind.method-name		= isFirst
+bytecode.ind.xo-class			= esi.finch.xo.GaussianCrossoverFinder
+bytecode.ind.mut-class			= esi.finch.mut.GaussianConstantsMutator
+bytecode.ind.max-growth			= 4.0
+
+bytecode.prob.eval-class		= esi.finch.probs.TwoSpiralsEvaluator

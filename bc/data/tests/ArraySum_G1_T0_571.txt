@@ -1,0 +1,231 @@
+Method: sumlist ([I)I
+Access: 1
+
+Params:
+vars written!: 0:esi/top/ecj/bc/probs/ArraySum_G1_T0_571 1:[I
+
+0: FRAME FULL [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I] [] -> [1]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I], pops 0, reads [], writes []
+Empty frame action
+
+1: ICONST_0 -> [2]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I], pops 0, reads [], writes []
+stack pushes:  I
+
+2: ISTORE 2 -> [3]
+stack [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I], pops 1, reads [], writes [2]
+stack pops:    I
+vars written!: 2:I
+
+3: ALOAD 1 -> [4]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I], pops 0, reads [1], writes []
+stack pushes:  [I
+vars read:     1:[I
+
+4: ARRAYLENGTH -> [5]
+stack [[I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I], pops 1, reads [], writes []
+stack pops:    [I
+stack pushes:  I
+
+5: ISTORE 3 -> [6]
+stack [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I], pops 1, reads [], writes [3]
+stack pops:    I
+vars written!: 3:I
+
+6: ICONST_0 -> [7]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I], pops 0, reads [], writes []
+stack pushes:  I
+
+7: ISTORE 4 -> [8]
+stack [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I], pops 1, reads [], writes [4]
+stack pops:    I
+vars written!: 4:I
+
+8: GOTO L24724388: -> [41]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+9: L4719703: -> [10]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+10: FRAME FULL [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I] [] -> [11]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+11: ILOAD 2 -> [12]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [2], writes []
+stack pushes:  I
+vars read:     2:I
+
+12: ILOAD 4 -> [13]
+stack [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [4], writes []
+stack pushes:  I
+vars read:     4:I
+
+13: ALOAD 1 -> [14]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [1], writes []
+stack pushes:  [I
+vars read:     1:[I
+
+14: ILOAD 4 -> [15]
+stack [I I [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [4], writes []
+stack pushes:  I
+vars read:     4:I
+
+15: IALOAD -> [16]
+stack [I I [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 2, reads [], writes []
+stack pops:    [I I
+stack pushes:  I
+
+16: ILOAD 3 -> [17]
+stack [I I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [3], writes []
+stack pushes:  I
+vars read:     3:I
+
+17: IADD -> [18]
+stack [I I I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 2, reads [], writes []
+stack pops:    I I
+stack pushes:  I
+
+18: ISTORE 4 -> [19]
+stack [I I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 1, reads [], writes [4]
+stack pops:    I
+vars written!: 4:I
+
+19: GOTO L1375836: -> [25]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+20: L4687246: -> [21]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+21: FRAME FULL [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I] [I I] -> [22]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+22: ILOAD 2 -> [23]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [2], writes []
+stack pushes:  I
+vars read:     2:I
+
+23: ISTORE 2 -> [24]
+stack [I I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 1, reads [], writes [2]
+stack pops:    I
+vars written!: 2:I
+
+24: IINC 4 1 -> [25]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [4], writes [4]
+vars read:     4:I
+vars written!: 4:I
+
+25: L1375836: -> [26]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+26: FRAME FULL [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I] [I I] -> [27]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+27: ILOAD 4 -> [28]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [4], writes []
+stack pushes:  I
+vars read:     4:I
+
+28: ALOAD 1 -> [29]
+stack [I I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [1], writes []
+stack pushes:  [I
+vars read:     1:[I
+
+29: ARRAYLENGTH -> [30]
+stack [I I I [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 1, reads [], writes []
+stack pops:    [I
+stack pushes:  I
+
+30: IF_ICMPLT L4687246: -> [20, 31]
+stack [I I I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 2, reads [], writes []
+stack pops:    I I
+
+31: ILOAD 2 -> [32]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [2], writes []
+stack pushes:  I
+vars read:     2:I
+
+32: IADD -> [33]
+stack [I I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 2, reads [], writes []
+stack pops:    I I
+stack pushes:  I
+
+33: IF_ICMPNE L26293492: -> [34, 38]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 2, reads [], writes []
+stack pops:    I I
+
+34: ILOAD 4 -> [35]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [4], writes []
+stack pushes:  I
+vars read:     4:I
+
+35: ILOAD 3 -> [36]
+stack [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [3], writes []
+stack pushes:  I
+vars read:     3:I
+
+36: ISUB -> [37]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 2, reads [], writes []
+stack pops:    I I
+stack pushes:  I
+
+37: ISTORE 2 -> [38]
+stack [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 1, reads [], writes [2]
+stack pops:    I
+vars written!: 2:I
+
+38: L26293492: -> [39]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+39: FRAME FULL [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I] [] -> [40]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+40: IINC 4 1 -> [41]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [4], writes [4]
+vars read:     4:I
+vars written!: 4:I
+
+41: L24724388: -> [42]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+42: FRAME FULL [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I] [] -> [43]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [], writes []
+Empty frame action
+
+43: ILOAD 4 -> [44]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [4], writes []
+stack pushes:  I
+vars read:     4:I
+
+44: ALOAD 1 -> [45]
+stack [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [1], writes []
+stack pushes:  [I
+vars read:     1:[I
+
+45: ARRAYLENGTH -> [46]
+stack [I [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 1, reads [], writes []
+stack pops:    [I
+stack pushes:  I
+
+46: IF_ICMPLT L4719703: -> [9, 47]
+stack [I I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 2, reads [], writes []
+stack pops:    I I
+
+47: ILOAD 2 -> [48]
+stack [], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 0, reads [2], writes []
+stack pushes:  I
+vars read:     2:I
+
+48: IRETURN -> stop
+stack [I], vars [esi/top/ecj/bc/probs/ArraySum_G1_T0_571 [I I I I], pops 1, reads [], writes []
+NULL frame actions

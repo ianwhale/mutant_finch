@@ -1,0 +1,118 @@
+Method: fact (I)I
+Access: 1
+
+LOCALVARIABLE this Lesi/bc/test/Fact; L18508170: L17237886: 0
+LOCALVARIABLE n I L18508170: L17237886: 1
+LOCALVARIABLE ans I L8187137: L17237886: 2
+Params:
+vars written!: 0:esi/bc/test/Fact 1:I
+
+0: L18508170: -> [1]
+stack [], vars [esi/bc/test/Fact I], pops 0, reads [], writes []
+Empty frame action
+
+1: LINENUMBER 15 L18508170: -> [2]
+stack [], vars [esi/bc/test/Fact I], pops 0, reads [], writes []
+Empty frame action
+
+2: FRAME FULL [esi/bc/test/Fact I] [] -> [3]
+stack [], vars [esi/bc/test/Fact I], pops 0, reads [], writes []
+Empty frame action
+
+3: ICONST_1 -> [4]
+stack [], vars [esi/bc/test/Fact I], pops 0, reads [], writes []
+stack pushes:  I
+
+4: ISTORE 2 -> [5]
+stack [I], vars [esi/bc/test/Fact I], pops 1, reads [], writes [2]
+stack pops:    I
+vars written!: 2:I
+
+5: L8187137: -> [6]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [], writes []
+Empty frame action
+
+6: LINENUMBER 18 L8187137: -> [7]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [], writes []
+Empty frame action
+
+7: ILOAD 1 -> [8]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [1], writes []
+stack pushes:  I
+vars read:     1:I
+
+8: IFLE L28050664: -> [9, 19]
+stack [I], vars [esi/bc/test/Fact I I], pops 1, reads [], writes []
+stack pops:    I
+
+9: L7754385: -> [10]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [], writes []
+Empty frame action
+
+10: LINENUMBER 20 L7754385: -> [11]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [], writes []
+Empty frame action
+
+11: ILOAD 1 -> [12]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [1], writes []
+stack pushes:  I
+vars read:     1:I
+
+12: ALOAD 0 -> [13]
+stack [I], vars [esi/bc/test/Fact I I], pops 0, reads [0], writes []
+stack pushes:  esi/bc/test/Fact
+vars read:     0:esi/bc/test/Fact
+
+13: ILOAD 1 -> [14]
+stack [I esi/bc/test/Fact], vars [esi/bc/test/Fact I I], pops 0, reads [1], writes []
+stack pushes:  I
+vars read:     1:I
+
+14: ICONST_1 -> [15]
+stack [I esi/bc/test/Fact I], vars [esi/bc/test/Fact I I], pops 0, reads [], writes []
+stack pushes:  I
+
+15: ISUB -> [16]
+stack [I esi/bc/test/Fact I I], vars [esi/bc/test/Fact I I], pops 2, reads [], writes []
+stack pops:    I I
+stack pushes:  I
+
+16: INVOKEVIRTUAL esi/bc/test/Fact.fact (I)I -> [17]
+stack [I esi/bc/test/Fact I], vars [esi/bc/test/Fact I I], pops 2, reads [], writes []
+stack pops:    esi/bc/test/Fact I
+stack pushes:  I
+
+17: IMUL -> [18]
+stack [I I], vars [esi/bc/test/Fact I I], pops 2, reads [], writes []
+stack pops:    I I
+stack pushes:  I
+
+18: ISTORE 2 -> [19]
+stack [I], vars [esi/bc/test/Fact I I], pops 1, reads [], writes [2]
+stack pops:    I
+vars written!: 2:I
+
+19: L28050664: -> [20]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [], writes []
+Empty frame action
+
+20: LINENUMBER 23 L28050664: -> [21]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [], writes []
+Empty frame action
+
+21: FRAME FULL [esi/bc/test/Fact I I] [] -> [22]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [], writes []
+Empty frame action
+
+22: ILOAD 2 -> [23]
+stack [], vars [esi/bc/test/Fact I I], pops 0, reads [2], writes []
+stack pushes:  I
+vars read:     2:I
+
+23: IRETURN -> stop
+stack [I], vars [esi/bc/test/Fact I I], pops 1, reads [], writes []
+NULL frame actions
+
+24: L17237886: -> stop
+NULL frame data
+NULL frame actions

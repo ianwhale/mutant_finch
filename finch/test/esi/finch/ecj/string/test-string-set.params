@@ -1,0 +1,9 @@
+# Single-Elimination Tournament variant of test-string.params
+parent.0		=	test-string.params
+
+# Change to Competitive Evaluator with single-elimination tournament
+eval			=	ec.coevolve.CompetitiveEvaluator
+eval.style		=	single-elim-tournament
+
+# Population size must be power of 2
+ec.subpop.size	=	32

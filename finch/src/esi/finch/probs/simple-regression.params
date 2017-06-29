@@ -1,0 +1,12 @@
+parent.0	=	../ecj/bc/bytecode.params
+
+# major parameters change
+select.tournament.size			= 2
+breed.elite.0					= 0
+
+# bytecode invidividual and its evaluator
+bytecode.ind.class				= esi.finch.probs.SimpleSymbolicRegression
+bytecode.ind.method-name		= simpleRegression
+bytecode.ind.xo-class			= esi.finch.xo.UniformCrossoverFinder
+
+bytecode.prob.eval-class		= esi.finch.probs.SimpleSymbolicRegressionEvaluator

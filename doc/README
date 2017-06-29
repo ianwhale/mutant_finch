@@ -1,0 +1,98 @@
+Project ESI
+===========
+
+The ESI project is organized as a set of Eclipse projects. The projects can
+be imported into Eclipse without tweaking any settings.
+
+The projects are located in SVN, sans libraries. The SVN address:
+
+  [no public SVN right now]
+
+
+Running
+-------
+
+  finch/bin/finch -p probs/simple-regression.params
+
+
+List of projects
+----------------
+
+* (top-level)
+  + build.xml  "libs" target recursively fetches all libraries
+  + conf       per-project and logger configuration
+  + output     log files
+    |-- ecj
+    |   |-- *.class    resulting class files
+        `-- ecj.log    ECJ log
+    `-- log
+        `-- out.0.log  FINCH log
+
+
+* util
+  + util
+    `-- data
+        `-- tests                    Junit 4 Eclipse launch configs
+  + libs.xml build file installs:
+        JUnit 4.8.2                  http://www.junit.org/
+
+
+* ecj
+
+  + ECJ 20                           http://cs.gmu.edu/~eclab/projects/ecj/
+  + Generics-related warnings disabled in Eclipse
+  + Original v18 commit tagged as "ecj-18-asm-3.1"
+  + Changes: System.exit(0) commented out       in ec.Evolve.main()
+             getClassForParameter returns Class in ec.util.ParameterDatabase
+             Fixed warnings in ec.Species, ec.eval.Slave, ec.multiobjective.MultiObjectiveStatistics
+  + libs.xml build file installs:
+        JZlib      1.0.7             http://www.jcraft.com/jzlib/
+
+
+* asm
+
+  + ASM 3.3.1                        http://asm.objectweb.org/
+                                     http://forge.objectweb.org/projects/asm/
+  + Code taken from asm-3.3.1-bin.zip/src.zip, sans empty optimizer/ directory
+  + Examples are taken from asm-3.3.1.tar.gz (sans jasmin.jar) and asm-guide.zip/src
+  + Changes: inheritance             in org.objectweb.asm.commons.RemappingMethodAdapter
+             dead code construction  in org.objectweb.asm.MethodWriter
+             interfaces handling     in org.objectweb.asm.tree.analysis.SimpleVerifier
+    [ Summary: svn diff $SVNHOME/projects/esi/tags/ecj-18-asm-3.1/asm-3.1/src
+                        $SVNHOME/projects/esi/tags/before-asm-3.2-upgrade/asm/src ]
+
+
+* bc
+
+  + Bytecode evolution
+  + Depends on asm, util
+  + jasmin.xml                        compiles all Jasmin sources
+               (ant -f jasmin.xml, or Alt-Shift-X + Q in Eclipse)
+  + libs.xml build file installs:
+        Jasmin  2.4                   http://jasmin.sourceforge.net/
+        XStream 1.3.1                 http://xstream.codehaus.org/
+        XPP3    1.1.4c                http://www.extreme.indiana.edu/xgws/xsoap/xpp/mxp1/
+
+
+* finch
+
+  + ECJ glue
+  + Depends on ecj, bc (+ asm), util
+
+
+
+Recommended environment
+-----------------------
+
+* Eclipse
+
+  + Eclipse          3.5.x            http://www.eclipse.org/
+  + Subclipse        1.6.x            http://subclipse.tigris.org/update_1.6.x
+  + Bytecode Outline 2.2.x            http://andrei.gmxhome.de/eclipse/
+  + AnyEditTools     2.1.x            http://andrei.gmxhome.de/eclipse/
+  + VisualVM         1.2.x            http://visualvm.dev.java.net/ (in Sun JDK)
+
+* Software
+
+  + JAD Decompiler   1.5.8g           http://www.varaneckas.com/jad
+  + JClassLib        3.0              http://www.ej-technologies.com/products/jclasslib/overview.html

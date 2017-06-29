@@ -1,0 +1,79 @@
+### ec.Evolve
+
+# totally verbose
+verbosity				= 0
+# flush output immediately
+flush					= true
+# store announcements in memory
+store					= true
+
+# number of breeding and evaluating threads
+# NOTE: as long as both are 1, no new threads are created,
+# otherwise *everything* happens in new threads
+breedthreads			= 1
+evalthreads 			= 1
+
+# random seed for threads (can be 'time')
+# num(seeds) >= max(breedthreads,evalthreads)
+seed.0					= time
+seed.1					= time
+
+# simple generational evolution
+state					= ec.simple.SimpleEvolutionState
+
+
+### ec.EvolutionState
+
+# if 'true', create a checkpoint every modulo generations
+checkpoint				= true
+checkpoint-modulo		= 30
+
+# standard initialization
+init					= ec.simple.SimpleInitializer
+
+# standard (empty) finalization
+finish					= ec.simple.SimpleFinisher
+
+# standard breeding -- no cross-population breeding
+breed					= ec.simple.SimpleBreeder
+
+# standard evaluation -- no coevolution
+eval					= ec.simple.SimpleEvaluator
+
+# standard (empty) exchange method
+exch					= ec.simple.SimpleExchanger
+
+# simple statistics
+stat					= ec.simple.SimpleStatistics
+
+# population
+pop								= ec.Population
+pop.subpops						= 1
+
+# subpopulation
+pop.subpop.0					= ec.Subpopulation
+pop.subpop.0.size 				= 500
+pop.subpop.0.duplicate-retries 	= 0
+pop.subpop.0.species 			= ec.vector.VectorSpecies
+
+# representation & fitness
+pop.subpop.0.species.ind					= ec.vector.BitVectorIndividual
+pop.subpop.0.species.fitness				= ec.simple.SimpleFitness
+pop.subpop.0.species.genome-size			= 32
+pop.subpop.0.species.crossover-type			= any
+pop.subpop.0.species.crossover-prob			= 0.2
+pop.subpop.0.species.mutation-prob			= 0.01
+
+# breeding pipeline
+pop.subpop.0.species.pipe					= ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0			= ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0	= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
+select.tournament.size						= 4
+
+# run for given number of generations, quit prematurely on ideal individual
+generations				= 31
+quit-on-run-complete	= true
+
+# statistics file
+stat.gzip				= false

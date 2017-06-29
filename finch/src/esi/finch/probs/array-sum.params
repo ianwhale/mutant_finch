@@ -1,0 +1,18 @@
+parent.0	=	../ecj/bc/bytecode.params
+
+# major parameters change
+immutable.species.xo-prob		= 0.8
+ec.subpop.size					= 500
+breed.elite.0					= 1
+generations						= 51
+
+# bytecode invidividual and its evaluator
+bytecode.ind.class				= esi.finch.probs.ArraySum
+bytecode.ind.method-name		= sumlistrec
+#bytecode.ind.method-desc		= ([I)I
+#bytecode.ind.method-desc		= (Ljava/util/List;)I
+bytecode.ind.xo-class			= esi.finch.xo.GaussianCrossoverFinder
+bytecode.ind.max-growth			= 2.0
+
+bytecode.prob.eval-class		= esi.finch.probs.ArraySumEvaluator
+bytecode.prob.steps				= 5000

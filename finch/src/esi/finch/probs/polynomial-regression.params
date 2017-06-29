@@ -1,0 +1,12 @@
+parent.0	=	../ecj/bc/bytecode.params
+
+# major parameters change
+breed.elite.0					= 0
+
+# bytecode invidividual and its evaluator
+bytecode.ind.class				= esi.finch.probs.SimpleSymbolicRegression
+bytecode.ind.method-name		= simpleRegression
+bytecode.ind.xo-class			= esi.finch.xo.GaussianCrossoverFinder
+bytecode.ind.max-growth			= 5.0
+
+bytecode.prob.eval-class		= esi.finch.probs.PolynomialSymbolicRegressionEvaluator

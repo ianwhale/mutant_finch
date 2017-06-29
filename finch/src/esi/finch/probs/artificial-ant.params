@@ -1,0 +1,13 @@
+parent.0	=	../ecj/bc/bytecode.params
+
+# major parameters change
+ec.subpop.size					= 10000
+generations						= 101
+
+# bytecode invidividual and its evaluator
+bytecode.ind.class				= esi.finch.probs.ArtificialAnt
+bytecode.ind.method-name		= step
+bytecode.ind.xo-class			= esi.finch.xo.GaussianCrossoverFinder
+bytecode.ind.max-growth			= 4.0
+
+bytecode.prob.eval-class		= esi.finch.probs.ArtificialAntEvaluator
