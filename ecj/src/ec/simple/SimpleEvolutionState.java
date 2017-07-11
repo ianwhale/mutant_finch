@@ -75,7 +75,7 @@ public class SimpleEvolutionState extends EvolutionState
         statistics.preEvaluationStatistics(this);
         evaluator.evaluatePopulation(this);
         statistics.postEvaluationStatistics(this);
-
+        
         // SHOULD WE QUIT?
         if (evaluator.runComplete(this) && quitOnRunComplete)
             {

@@ -70,7 +70,6 @@ public class SimpleStatistics extends Statistics implements SteadyStateStatistic
     /** Should we compress the file? */
     public boolean compress;
 
-
     public SimpleStatistics() { best_of_run = null; statisticslog = 0; /* stdout */ }
 
     public void setup(final EvolutionState state, final Parameter base)
@@ -124,6 +123,7 @@ public class SimpleStatistics extends Statistics implements SteadyStateStatistic
         // print the best-of-generation individual
         state.output.println("\nGeneration: " + state.generation,statisticslog);
         state.output.println("Best Individual:",statisticslog);
+        
         for(int x=0;x<state.population.subpops.length;x++)
             {
             state.output.println("Subpopulation " + x + ":",statisticslog);

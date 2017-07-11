@@ -65,7 +65,7 @@ public class CodeModifier extends CodeProducer {
 
 		log.trace("Modifying: SRC=" + oldInternalName.replace('/', '.') + "." + method
 				+ ", RES="  + name);
-
+		
 		if (mutate_instructions) {
 			// Modify instruction(s) using the instructions adapter
 			ClassAdapter instructionsAdapter = new InstructionsClassAdapter(new EmptyVisitor(), method, instructions_mutator);
@@ -92,7 +92,7 @@ public class CodeModifier extends CodeProducer {
 		// Modify constants using the constants adapter
 		ClassAdapter constantsAdapter = new ConstantsClassAdapter(renamingAdapter, method, mutator);
 		cn.accept(constantsAdapter);
-
+		
 		setBytes(bytesOut.toByteArray());
 	}
 

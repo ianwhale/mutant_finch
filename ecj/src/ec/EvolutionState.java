@@ -8,6 +8,7 @@
 package ec;
 import ec.util.ParameterDatabase;
 import ec.util.Parameter;
+import ec.simple.SimpleStatistics;
 import ec.util.MersenneTwisterFast;
 import ec.util.Output;
 import java.io.IOException;

@@ -54,10 +54,10 @@ pop.subpops						= 1
 
 # subpopulation
 pop.subpop.0					= ec.Subpopulation
-ec.subpop.size					= 50
+ec.subpop.size					= 100
 ec.subpop.duplicate-retries		= 0
 ec.subpop.species				= esi.finch.ecj.immutable.ImmutableSpecies
-breed.elite.0					= 5
+breed.elite.0					= 0
 
 # representation & fitness
 immutable.species.fitness		= ec.simple.SimpleFitness
@@ -69,7 +69,7 @@ bytecode.prob.timeout			= 5000
 # instruction mutator parameters
 insn.mut.allowed = true		
 # If false, all mutations have the same probability
-insn.mut.custom-distrib = true
+insn.mut.custom-distrib = false
 insn.mut.deletion = 0.333
 insn.mut.copy = 0.334
 insn.mut.insert = 0.0
@@ -86,7 +86,7 @@ pop.subpop.0.species.pipe.source.0.source.1	= same
 select.tournament.size						= 4
 
 # run for given number of generations, quit prematurely on ideal individual
-generations				= 25
+generations				= 100
 quit-on-run-complete	= true
 
 # statistics file

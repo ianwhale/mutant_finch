@@ -1,7 +1,7 @@
 parent.0				= ../ecj/bc/bytecode.params
 
 # major parameters change
-breed.elite.0				= 1
+breed.elite.0				= 0
 
 # bytecode invidividual and its evaluator
 bytecode.ind.max-growth			= 2.0

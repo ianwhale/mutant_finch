@@ -106,5 +106,5 @@ public class FinchExperiment {
 			log.fatal("Incorrect command-line arguments: " + e.getMessage());
 		}
 	}
-
 }
+	

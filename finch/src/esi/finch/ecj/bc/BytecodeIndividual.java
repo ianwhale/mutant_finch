@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.Method;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.Method;
 import ec.EvolutionState;
 import ec.Individual;
+import ec.simple.SimpleFitness;
 import ec.util.MersenneTwisterFast;
 import ec.util.Parameter;
 import esi.bc.AnalyzedClassNode;
@@ -159,7 +161,16 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 			if (xoSections != null) {
 				// Bytecode merger
 				CodeMerger merger = new CodeMerger(name, origName, alphaClassNode, betaClassNode, xoSections.alpha, xoSections.beta);
-
+//				try {
+//					merger = new CodeMerger(name, origName, alphaClassNode, betaClassNode, xoSections.alpha, xoSections.beta);
+//				}
+//				catch (RuntimeException e) {
+//					// Invalid code structure, assign minimal fitness. 
+//					SimpleFitness sfit = (SimpleFitness) res.fitness;
+//					sfit.setFitness(state, Integer.MIN_VALUE, false);
+//					return res;
+//				}
+				
 				// Create and fill new individual
 				res = clone();
 				res.fillGenome(merger);
@@ -195,7 +206,16 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 				instructions_mutator = MutatorFactory.makeMutator(random, species.getMutProb());
 			}
 			
-			CodeModifier modifier = new CodeModifier(name, getClassNode(), methodDef, mutator, instructions_mutator, mutateInstructions);
+			CodeModifier modifier;
+			try {
+				modifier = new CodeModifier(name, getClassNode(), methodDef, mutator, instructions_mutator, mutateInstructions);
+			}
+			catch (RuntimeException e) {
+				// Invalid code structure, assign minimal fitness. 
+				SimpleFitness sfit = (SimpleFitness) res.fitness;
+				sfit.setFitness(state, Integer.MIN_VALUE, false);
+				return res;
+			}
 
 			// Create and fill new individual
 			res = clone();

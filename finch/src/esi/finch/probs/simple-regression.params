@@ -8,5 +8,5 @@ breed.elite.0					= 0
 bytecode.ind.class				= esi.finch.probs.SimpleSymbolicRegression
 bytecode.ind.method-name		= simpleRegression
 bytecode.ind.xo-class			= esi.finch.xo.UniformCrossoverFinder
-
+bytecode.ind.mut-class			= esi.finch.mut.UniformConstantsMutator
 bytecode.prob.eval-class		= esi.finch.probs.SimpleSymbolicRegressionEvaluator

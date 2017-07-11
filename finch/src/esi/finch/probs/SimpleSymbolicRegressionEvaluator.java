@@ -29,7 +29,18 @@ public class SimpleSymbolicRegressionEvaluator implements BytecodeEvaluator {
 
 	@Override
 	public Result evaluate(BytecodeIndividual ind, long timeout, long steps, MersenneTwisterFast random, int threadnum) {
-		Method   method = ind.getMethod();
+		Tracker.maybe_print();
+		
+		Method method;
+		try {
+			method = ind.getMethod();
+		}
+		catch (ClassFormatError e) {
+			System.out.println(e);
+			Tracker.verify.getAndIncrement();
+			return new Result(Float.MIN_VALUE, false);
+		}
+		
 		Class<?> klass  = method.getDeclaringClass();
 
 		Object instance;
@@ -58,11 +69,13 @@ public class SimpleSymbolicRegressionEvaluator implements BytecodeEvaluator {
 
 			// Timeout invalidates the individual
 			if (result == null) {
+				Tracker.timeout.getAndIncrement();
 				log.debug("Timeout in " + ind);
 				valid = false;
 			}
 			// An exception invalidates the individual
 			else if (result.exception != null) {
+				Tracker.runtime.getAndIncrement();
 				log.debug("Exception: " + result.exception + " in " + ind);
 				valid = false;
 			}
