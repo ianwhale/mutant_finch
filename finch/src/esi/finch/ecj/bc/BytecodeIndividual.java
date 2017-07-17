@@ -143,8 +143,27 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 			String name     = createClassName(state.generation, thread);
 
 			// Alpha and beta class nodes
-			AnalyzedClassNode alphaClassNode = getClassNode();
-			AnalyzedClassNode betaClassNode  = other.getClassNode();
+			AnalyzedClassNode alphaClassNode;
+			AnalyzedClassNode betaClassNode;
+			try {
+				alphaClassNode = getClassNode();
+				
+			}
+			catch (RuntimeException e) {
+				// Invalid code structure, assign minimal fitness. 
+				SimpleFitness sfit = (SimpleFitness) res.fitness;
+				sfit.setFitness(state, Integer.MIN_VALUE, false);
+				return res;
+			}
+			
+			try {
+				betaClassNode  = other.getClassNode();
+			}
+			catch (RuntimeException e) {
+				// Other has invalid code structure, quit crossover attempt. 
+				return res;
+			}
+
 			TypeVerifier      verifier       = new TypeVerifier(alphaClassNode, betaClassNode);
 
 			// Alpha and beta method nodes
@@ -161,15 +180,6 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 			if (xoSections != null) {
 				// Bytecode merger
 				CodeMerger merger = new CodeMerger(name, origName, alphaClassNode, betaClassNode, xoSections.alpha, xoSections.beta);
-//				try {
-//					merger = new CodeMerger(name, origName, alphaClassNode, betaClassNode, xoSections.alpha, xoSections.beta);
-//				}
-//				catch (RuntimeException e) {
-//					// Invalid code structure, assign minimal fitness. 
-//					SimpleFitness sfit = (SimpleFitness) res.fitness;
-//					sfit.setFitness(state, Integer.MIN_VALUE, false);
-//					return res;
-//				}
 				
 				// Create and fill new individual
 				res = clone();
