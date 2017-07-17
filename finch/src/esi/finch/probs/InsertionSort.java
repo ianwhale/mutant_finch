@@ -24,17 +24,17 @@ public class InsertionSort {
 //        	int y = 102;
 //        	y--;
 //        }
-        
-        // Original with 1 bug.
+
+        // Finch can solve this one...
         for (int i = 1; i < size; i++) {
         	int value = list[i];
-        	int j = i; // Mistake line, should be i - 1
+        	int j = i - 1;
         	
         	while(j >= 0 && list[j] > value) {
-        		list[j + 1] = list[j - 1];
-        		j = j - 1; // Line containing solution
+        		list[j + 1] = list[j - 1]; // Second index should be [j]
+        		j = j - 1;
         	}
-        	list[j] = value;
+        	list[j + 1] = value;
         }
         
         return list;
