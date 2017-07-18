@@ -3,6 +3,7 @@
 import os
 import sys
 import csv
+from collections import defaultdict
 
 MAX_FITNESS = "MAX_FITNESS"
 
@@ -29,13 +30,17 @@ def parse(relpath):
     Parse the log file into a useful dictionary.
     @param relpath, relative path to an ecj log file.
     """
-    info = {} ## Keep some information about each file.
+    info = {} ## Keep the per-generation fitness
 
     with open(os.path.abspath(relpath), 'r') as logptr:
         name = os.path.splitext(os.path.basename(logptr.name))[0]
         generation = 0
 
         for line in logptr:
+            if len(line.split('Best Individual of Run:')) == 2:
+                ## We don't want the final log read out.
+                break
+
             split = line.split("Fitness: ")
 
             if len(split) > 1:
@@ -66,19 +71,38 @@ if __name__ == "__main__":
 
         found = os.path.join(".", sys.argv[i])
         if os.path.isdir(found):
+            name = os.path.basename(os.path.normpath(name))
+
             with cd(found):
-                if os.path.isfile(os.path.join(".", "ecj" + name + ".log")):
+                log_name = "ecj" + name + ".log"
+                ecj_log_path = os.path.join(".", log_name)
+
+                if os.path.isfile(ecj_log_path):
                     info[name] = parse(os.path.join(".", "ecj" + name + ".log"))
                     names.append(name)
 
+    names.sort(key=lambda name: int(name)) # Assumes directories are all integer seed values...
+
     with open("fitnesses.csv", "w") as csvptr:
         writer = csv.writer(csvptr)
-
         writer.writerow(header(names))
 
-        for generation in range(len(info[names[0]])):
+        maximums = defaultdict(lambda:float('-inf'))
+        generations = int(input("How many generations: "))
+        for generation in range(generations):
             row = [generation]
             for name in names:
-                row.append(info[name][generation])
+                try:
+                    row.append(info[name][generation])
+                    maximums[name] = info[name][generation] if \
+                                    info[name][generation] > maximums[name] \
+                                    else maximums[name]
+
+                except KeyError:
+                    row.append("NULL")
 
             writer.writerow(row)
+
+        writer.writerow([MAX_FITNESS] + [maximums[name] for name in names])
+
+    print("All done. Check out fitnesses.csv for info about your run.")

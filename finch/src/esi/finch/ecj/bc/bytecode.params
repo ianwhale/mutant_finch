@@ -67,7 +67,7 @@ immutable.species.mut-prob		= 0.01
 bytecode.prob.timeout			= 5000
 
 # instruction mutator parameters
-insn.mut.allowed = true		
+insn.mut.allowed = false		
 # If false, all mutations have the same probability
 insn.mut.custom-distrib = false
 insn.mut.deletion = 0.333
