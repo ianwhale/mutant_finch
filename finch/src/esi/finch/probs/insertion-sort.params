@@ -10,6 +10,6 @@ bytecode.ind.method-desc		= ([I)[I
 bytecode.ind.method-name		= sort
 bytecode.ind.xo-class			= esi.finch.xo.UniformCrossoverFinder
 bytecode.ind.mut-class			= esi.finch.mut.UniformConstantsMutator
-bytecode.prob.eval-class		= esi.finch.probs.InsertionSortEvaluator
+bytecode.prob.eval-class		= esi.finch.probs.SortEvaluator
 bytecode.prob.steps			= 15000
 bytecode.prob.timeout			= 10000
