@@ -9,6 +9,9 @@ public class InsertionSort {
 //        	int x = 1234 * -12 % list.length + 77;
 //        	list[i] = x;
 //        	x = 0;
+//        	for (int k = i; k >= 0; k--) {
+//        		list[k]++;
+//        	}
 //        }
 //        int i = 0;
 //        int j = list[i];
@@ -25,6 +28,17 @@ public class InsertionSort {
 //        	y--;
 //        }
 
+//        for (int i = 1; i < size; i++) {
+//        	int value = list[i];
+//        	int j = i; // Should be i - 1
+//        	
+//        	while(j >= 0 && list[j] > value) {
+//        		list[j + 1] = list[j - 1]; // Second index should be [j]
+//        		j = j - 1;
+//        	}
+//        	list[j + 1] = value;
+//        }
+        
         // Finch can solve this one...
         for (int i = 1; i < size; i++) {
         	int value = list[i];

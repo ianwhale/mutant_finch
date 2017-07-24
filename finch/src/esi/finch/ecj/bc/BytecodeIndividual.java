@@ -174,18 +174,24 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 			AnalyzedMethodNode betaMethod = betaClassNode.findMethod(methodDef);
 
 			// Pick crossover sections
-			CompatibleCrossover xo = new CompatibleCrossover(alphaMethod, betaMethod, verifier);
-			CrossoverFinder xoFinder = Loader.loadClassInstance(xoFinderClass, alphaMethod, betaMethod, xo, random,
-					Math.round(initSize * maxGrowth));
-			
+			CompatibleCrossover xo;
+			CrossoverFinder xoFinder;
 			Sections xoSections;
 			try {
-				xoSections = xoFinder.getSuggestion();
-			} catch (AssertionError e) {
-				// Something wrong with the stack data just quit. 
+				 xo = new CompatibleCrossover(alphaMethod, betaMethod, verifier);
+				 xoFinder = Loader.loadClassInstance(xoFinderClass, alphaMethod, betaMethod, xo, random,
+							Math.round(initSize * maxGrowth));
+				 xoSections = xoFinder.getSuggestion();
+			}
+			catch (RuntimeException e) {
+				// Something wrong with the stack data. 
 				return res;
 			}
-
+			catch (AssertionError e) {
+				// Something wrong with the frame layout.
+				return res; 
+			}
+			
 			// If crossover was found
 			if (xoSections != null) {
 				// Bytecode merger
