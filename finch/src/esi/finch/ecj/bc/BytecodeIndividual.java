@@ -195,8 +195,14 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 			// If crossover was found
 			if (xoSections != null) {
 				// Bytecode merger
-				CodeMerger merger = new CodeMerger(name, origName, alphaClassNode, betaClassNode, xoSections.alpha,
-						xoSections.beta);
+				CodeMerger merger;
+				try {
+					 merger = new CodeMerger(name, origName, alphaClassNode, betaClassNode, xoSections.alpha,
+							xoSections.beta);
+				}
+				catch (RuntimeException e) {
+					return res;
+				}
 
 				// Create and fill new individual
 				res = clone();

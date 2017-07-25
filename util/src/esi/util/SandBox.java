@@ -41,7 +41,7 @@ public class SandBox {
 	 */
 	public static class Result {
 		public Throwable exception;		// exception if it occurred
-
+		public long		 byteCodeCount; // number of bytecode instructions executed
 		public long      millis;		// execution time (or till exception)
 		public Object    retvalue;		// value returned by the method (null if void)
 

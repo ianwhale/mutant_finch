@@ -69,7 +69,7 @@ bytecode.prob.timeout			= 5000
 # instruction mutator parameters
 insn.mut.allowed = true		
 # If false, all mutations have the same probability
-insn.mut.custom-distrib = true
+insn.mut.custom-distrib = false
 insn.mut.deletion = 0.333
 insn.mut.copy = 0.334
 insn.mut.insert = 0.0
