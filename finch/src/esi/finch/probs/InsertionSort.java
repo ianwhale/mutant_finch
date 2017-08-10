@@ -3,8 +3,21 @@ package esi.finch.probs;
 public class InsertionSort {
 	
 	public int[] sort(int[] list) {
-        int size = list.length;
+		int size = list.length;
         
+        // Version for optimization.
+//		for (int i = 1; i < size; i++) {
+//			int value = list[i];
+//			int j = i - 1;
+//		
+//			while(j >= 0 && list[j] > value) {
+//				list[j + 1] = list[j];
+//				j = j - 1;
+//			}
+//			list[j + 1] = value;
+//		}
+//        
+		// Junk version.
 //        for (int i = 1; i < size; i += 2) {
 //        	int x = 1234 * -12 % list.length + 77;
 //        	list[i] = x;
@@ -28,15 +41,16 @@ public class InsertionSort {
 //        	y--;
 //        }
 
+		// 2 Bugs Layout
 //        for (int i = 1; i < size; i++) {
 //        	int value = list[i];
-//        	int j = i; // Should be i - 1
+//        	int j = i - 1;
 //        	
 //        	while(j >= 0 && list[j] > value) {
 //        		list[j + 1] = list[j - 1]; // Second index should be [j]
 //        		j = j - 1;
 //        	}
-//        	list[j + 1] = value;
+//        	list[j + 1] = list[j]; // List[j] should be value
 //        }
         
         // Finch can solve this one...
@@ -53,4 +67,27 @@ public class InsertionSort {
         
         return list;
 	}
+	
+//	/**
+//	 * For the optimization version of this problem we have to have the seed program. 
+//	 * @param list
+//	 * @return
+//	 */
+//	public int[] seed(int[] list) {
+//		int size = list.length;
+//        
+//        // Version for optimization.
+//		for (int i = 1; i < size; i++) {
+//			int value = list[i];
+//			int j = i - 1;
+//		
+//			while(j >= 0 && list[j] > value) {
+//				list[j + 1] = list[j];
+//				j = j - 1;
+//			}
+//			list[j + 1] = value;
+//		}
+//		
+//		return list;
+//	}
 }

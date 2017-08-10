@@ -32,6 +32,7 @@ import esi.bc.xo.CompatibleCrossover;
 import esi.bc.xo.TypeVerifier;
 import esi.finch.ecj.immutable.ImmutableIndividual;
 import esi.finch.ecj.immutable.ImmutableSpecies;
+import esi.finch.mut.MutationVerifier;
 import esi.finch.mut.MutatorFactory;
 import esi.finch.xo.CrossoverFinder;
 import esi.finch.xo.CrossoverFinder.Sections;
@@ -68,6 +69,7 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 
 	private static final boolean DUMP = SpecializedConstants.getBoolean(BytecodeIndividual.class, "dump");
 	private static final int STEPS_MULT = SpecializedConstants.getInt(BytecodeIndividual.class, "steps-indexes");
+	private static int BYTE_COUNT_LIMIT;
 	private static final Log log = Config.getLogger();
 
 	private static final long serialVersionUID = 1L;
@@ -108,7 +110,28 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 				Thread.sleep(0);
 		}
 	}
-
+	
+	/**
+	 * Class to count all instructions executed by a method.
+	 * Steps interrupter counts when a backward jump or invocation is made,
+	 * for some improvement tasks we'd like to count how many bytecode instructions
+	 * are executed by a method. 
+	 */
+	public static class ByteCodeCounter {
+		private static long[] bytecodes;
+		
+		public static void count(int id) throws InterruptedException {
+			if (bytecodes[id] < BYTE_COUNT_LIMIT) {
+				if (++bytecodes[id] >= BYTE_COUNT_LIMIT) {
+					throw new InterruptedException("Bytecode limit exceeded");
+				}
+			}
+			else {
+				Thread.sleep(0);
+			}
+		}
+	}
+	
 	// Per-breed counters (initialized in setup)
 	private int[] counters;
 	// Initial values (filled in setup)
@@ -221,6 +244,82 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 
 		ImmutableSpecies species = (ImmutableSpecies) this.species;
 		BytecodeIndividual res = this;
+		
+		MersenneTwisterFast random = state.random[thread];
+
+		if (species.getMutProb() > 0 &&
+				random.nextFloat() < species.getMutProb()) {
+			// New mutation method.
+			// Only clone individual and fill the new genome if mutation produces a viable offspring.
+			
+			
+			// New name (although same names are ok)
+			String name = createClassName(state.generation, thread);
+
+			AnalyzedClassNode originalClassNode = getClassNode();
+			AnalyzedMethodNode originalMethod = originalClassNode.findMethod(methodDef);
+			
+			ConstantsMutator mutator = Loader.loadClassInstance(mutConstantsClass, species.getMutProb(), random);
+
+			InstructionsMutator instructions_mutator;
+			if (useDistribution) {
+				instructions_mutator = MutatorFactory.makeMutator(random, mutationDistribution, species.getMutProb());
+			} else {
+				instructions_mutator = MutatorFactory.makeMutator(random, species.getMutProb());
+			}
+			
+			AnalyzedClassNode mutantClassNode = null;
+			CodeModifier modifier = null;
+			AnalyzedMethodNode mutantMethod = null;
+			TypeVerifier verifier = null;
+			CompatibleCrossover xo = null;
+			MutationVerifier mutVerifier = null;
+			
+			int i = 0; 
+			// Attempt to mutate until we find a valid mutation.
+			do {
+				mutantClassNode = getClassNode(); // Not a reference, points to the same class but different object than original.
+				
+				try {
+					modifier = new CodeModifier(name, mutantClassNode, methodDef, mutator, instructions_mutator,
+							mutateInstructions);
+				}
+				catch (RuntimeException e) {
+					return res;
+				}
+				
+				mutantMethod = mutantClassNode.findMethod(methodDef);
+				
+				verifier = new TypeVerifier(originalClassNode, mutantClassNode);
+				xo = new CompatibleCrossover(originalMethod, mutantMethod, verifier);
+				
+				mutVerifier = new MutationVerifier(originalMethod, mutantMethod, xo);
+				
+				if (i++ > 1000) {
+					//System.out.println("Too many tries at mutation.");
+					break;
+				}
+				
+			} while(! mutVerifier.isValidMutation());
+			
+			//System.out.println("Made a good mutation!");
+			
+			// Create and fill new individual
+			res = clone();
+			res.fillGenome(modifier);
+		}
+
+		return res;
+	}
+
+/* OLD MUTATION METHOD. 
+	@Override 
+	public BytecodeIndividual mutate(EvolutionState state, int thread) {
+		// It is possible for individuals entering mutation pipeline
+		// to be unevaluated (if they come after crossover)
+
+		ImmutableSpecies species = (ImmutableSpecies) this.species;
+		BytecodeIndividual res = this;
 
 		if (species.getMutProb() > 0) {
 			// New name (although same names are ok)
@@ -255,7 +354,9 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 
 		return res;
 	}
-
+*/
+	
+	
 	/**
 	 * Set up the instruction mutation parameters.
 	 * 
@@ -328,6 +429,12 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 	public void setup(EvolutionState state, Parameter base) {
 		super.setup(state, base);
 
+		BYTE_COUNT_LIMIT = 
+				state.parameters.getInt(new Parameter("bytecode.count.limit"), 
+						new Parameter("bytecode.count.limit"));
+		
+		System.out.println(BYTE_COUNT_LIMIT);
+		
 		// This should only happen once in a single experiment (but happens more
 		// in tests)
 		synchronized (getClass()) {
@@ -336,6 +443,10 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 				StepsInterrupter.steps = new long[state.evalthreads * STEPS_MULT];
 			} else
 				log.warn("ECJ attempted to initialize prototype individual more than once");
+			
+			if (ByteCodeCounter.bytecodes == null) {
+				ByteCodeCounter.bytecodes = new long[state.evalthreads * BYTE_COUNT_LIMIT];
+			}
 		}
 
 		// Initialize per-breeding-thread counters to 0
@@ -472,6 +583,21 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 		} catch (NoSuchMethodException e) {
 			throw new Error("Unexpected: method not found", e);
 		}
+	}
+	
+	/**
+	 * Just like getInterruptibleMethod, however it counts the number of Bytecode instructions
+	 * executed by a method. 
+	 * 
+	 * **Note: only can work on a singular method, won't count bytecodes executed by external method calls.
+	 * **Note (2): {@link getInterruptibleMethod} won't interrupt external methods either.
+	 * @param threadnum
+	 * @param index
+	 * @return
+	 */
+	public java.lang.reflect.Method getCountableMethod(int threadnum, int index) {
+		// Ignore me!
+		return null;
 	}
 
 	/**

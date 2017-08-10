@@ -66,6 +66,9 @@ immutable.species.xo-prob		= 0.9
 immutable.species.mut-prob		= 0.01
 bytecode.prob.timeout			= 5000
 
+# The upper limit of bytecode instructions executed
+bytecode.count.limit			= 5000
+
 # instruction mutator parameters
 insn.mut.allowed = true		
 # If false, all mutations have the same probability

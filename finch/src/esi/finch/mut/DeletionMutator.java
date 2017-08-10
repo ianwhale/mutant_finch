@@ -21,9 +21,7 @@ public class DeletionMutator implements InstructionsMutator {
 	}
 	
 	public void mutate(MethodNode node) {
-		if (random.nextFloat() < mutProb) {
-			DeletionMutator.deleteInstruction(node, random.nextInt(node.instructions.size() - 1)); // -1 so we don't mess with RETURN. 
-		}
+		DeletionMutator.deleteInstruction(node, random.nextInt(node.instructions.size() - 1)); // -1 so we don't mess with RETURN. 
 	}
 	
 	/**

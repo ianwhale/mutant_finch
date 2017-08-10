@@ -15,11 +15,9 @@ public class CopyMutator implements InstructionsMutator {
 	}
 	
 	public void mutate(MethodNode node) {
-		if (random.nextFloat() < mutProb) {
-			CopyMutator.copyInstruction(node, 
-					random.nextInt(node.instructions.size() - 1), 
-					random.nextInt(node.instructions.size() - 1)); // -1 so we don't mess with RETURN. 
-		}
+		CopyMutator.copyInstruction(node, 
+				random.nextInt(node.instructions.size() - 1), 
+				random.nextInt(node.instructions.size() - 1)); // -1 so we don't mess with RETURN. 
 	}
 	
 	/**

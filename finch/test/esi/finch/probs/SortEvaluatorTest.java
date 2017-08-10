@@ -6,7 +6,7 @@ import ec.util.MersenneTwisterFast;
 import java.util.Arrays;
 
 public class SortEvaluatorTest {
-	public static final MersenneTwisterFast random = new MersenneTwisterFast();
+	public static final MersenneTwisterFast random = new MersenneTwisterFast(42);
 
 	/**
 	 * Need to be sure that the fill list function produces a valid derangement. 
@@ -51,5 +51,18 @@ public class SortEvaluatorTest {
 		
 		int test = REMScore.longestIncreasingSubsequence(vdcs);
 		assertEquals(len, test);
+	}
+	
+	@Test 
+	public void testGetRawLocoScore() {
+		int[] original = {4, 2, -1, 0, 3};
+		int[] sorted = {-1, 0, 2, 3, 4};
+		int[] candidate = {0, -1, 2, 3, 4};
+		int[][] test_lists = {original};
+		
+		LocoScore ls = new LocoScore(test_lists);
+		ls.score(candidate, sorted, original);
+		
+		assertEquals(7.0, ls.getRawScore(), 0.0);
 	}
 }

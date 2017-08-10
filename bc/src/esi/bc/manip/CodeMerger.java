@@ -138,15 +138,11 @@ public class CodeMerger extends CodeProducer {
 	 * After duplication, methods should contain the same instructions,
 	 * but with different labels.
 	 *
-	 * TODO: get rid of this method, since reliance on there being
-	 * a same number of instructions in the duplicated node is wrong.
-	 * E.g., {@link AnalyzedClassNode} has a label associated with each
-	 * NEW instructions, whereas {@link ClassNode} does not.
 	 *
 	 * @param classNode class node to duplicate
 	 * @return duplicated result
 	 */
-	static ClassNode duplicateClassNode(ClassNode classNode) {
+	public static ClassNode duplicateClassNode(ClassNode classNode) {
 		// Pass through XML intermediate result.
 		ByteArrayOutputStream bytesOut   = new ByteArrayOutputStream();
 		ASMContentHandler     handler    = new ASMContentHandler(bytesOut, false);

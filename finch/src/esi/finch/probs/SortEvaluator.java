@@ -16,23 +16,16 @@ import esi.util.SandBox;
 import java.util.concurrent.atomic.AtomicLong;
 import ec.simple.SimpleFitness;
 
+/**
+ * Sort Evaluator is used for bug fixing (or program synthesis 
+ * if you're feeling adventurous) in sorting problems. 
+ * For code improvement, see {@link SortOptimizer} -- i.e. code that already sorts. 
+ */
 public class SortEvaluator implements BytecodeEvaluator {
 	public static final Log log = Config.getLogger();
-	
 	public static float worst_case = 0;
-	
 	public static final int LIST_LENGTH = 8;
-	
-	private static final float RT_PENALTY = 1.5f; // Extra penalty for a runtime error.
-	
-//	private static int total_lengths = 0;
-//	static {
-//		for (int[] list : testLists) {
-//			InsertionSortEvaluator.total_lengths += list.length;
-//		}
-//	}
-	
-//	private static int minimal_fitness = -2 * total_lengths;
+
 	
 	/**
 	 * Evaluate with some disorder metric. 
@@ -40,8 +33,6 @@ public class SortEvaluator implements BytecodeEvaluator {
 	@Override
 	public Result evaluate(BytecodeIndividual ind, long timeout, long steps, MersenneTwisterFast random, int threadnum) {
 		Tracker.maybe_print();
-		
-		int[][] test_lists = Derange.generateRandomLists(random, 3);
 		
 		Class<?> klass;
 		try {
@@ -78,6 +69,8 @@ public class SortEvaluator implements BytecodeEvaluator {
 		
 		SandBox sandbox = new SandBox(instance, sort, timeout);
 		SandBox.Result result; 
+		
+		int[][] test_lists = Derange.generateRandomLists(random, 3);
 		
 		SortScore remscore = new REMScore(test_lists);
 		SortScore locoscore = new LocoScore(test_lists);
@@ -401,6 +394,9 @@ class LocoScore extends SortScore {
 	private static final int MOVED = 2;
 	private static final int NOT_MOVED = 3;
 	
+	private float rawScore = 0.0f;
+	
+	
 	/**
 	 * Score is assigned based on each value in the candidate list:
 	 * 		| +1 if correct.
@@ -433,8 +429,19 @@ class LocoScore extends SortScore {
 		
 		// Value will be negative unless a candidate is sorted.
 		// In which case it will be 0. 
+		rawScore += result;
 		score += (candidate.length - result);
 	}
+	
+	/**
+	 * Get the score without adjustments to make it negative.
+	 * 
+	 * The original locoGP paper uses a fitness function where the raw
+	 * point score is needed. 
+	 * 
+	 * @return
+	 */
+	public float getRawScore() { return rawScore; }
 	
 	/**
 	 * Worst possible LocoScore. 

@@ -20,21 +20,17 @@ public class MoveMutator implements InstructionsMutator {
 	 * @param node
 	 */
 	public void mutate(MethodNode node) {
-		if (random.nextFloat() < mutProb) {
-			int origin = getValidIndex(node);
-			int destination = getValidIndex(node);
-			
-			// Make sure we actually move the instruction.
-			while (destination != origin) {
-				destination = getValidIndex(node);
-			}
-			
-			if (random.nextFloat() < mutProb) {
-				CopyMutator.copyInstruction(node, 
-						origin, 
-						destination);
-			}
+		int origin = getValidIndex(node);
+		int destination = getValidIndex(node);
+		
+		// Make sure we actually move the instruction.
+		while (destination != origin) {
+			destination = getValidIndex(node);
 		}
+		
+		CopyMutator.copyInstruction(node, 
+				origin, 
+				destination);
 	}
 	
 	/**

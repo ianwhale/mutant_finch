@@ -39,8 +39,7 @@ public class GaussianConstantsMutator extends IdentityConstantsMutator {
 
 	@Override
 	public double mutate(double x) {
-		if (random.nextFloat() < mutProb)
-			x += random.nextGaussian() / FACTOR;
+		x += random.nextGaussian() / FACTOR;
 
 		return x;
 	}

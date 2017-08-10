@@ -39,8 +39,7 @@ public class UniformConstantsMutator extends IdentityConstantsMutator {
 
 	@Override
 	public double mutate(double x) {
-		if (random.nextFloat() < mutProb)
-			x = (random.nextDouble() - 0.5) * 2 * LIMIT;
+		x = (random.nextDouble() - 0.5) * 2 * LIMIT;
 
 		return x;
 	}
