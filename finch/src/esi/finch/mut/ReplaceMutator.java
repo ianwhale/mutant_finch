@@ -21,18 +21,16 @@ public class ReplaceMutator extends MaterialIntroducer implements InstructionsMu
 	 * @param method
 	 */
 	public void mutate(MethodNode method) {
-		if (random.nextFloat() < mutProb) {
-			int size = method.instructions.size() - 1; // -1 so we don't mess with RETURN. 
-			int position = random.nextInt(size);
-			AbstractInsnNode node = method.instructions.get(position);
-			
-			// Continue while the node selected is not a "fake" instruction, i.e. label, line number reference, etc. 
-			while(position < size - 1 && node.getOpcode() < 0) {
-				node = method.instructions.get(++position);
-			}
-			
-			replaceInstruction(method, position);
+		int size = method.instructions.size() - 1; // -1 so we don't mess with xRETURN. 
+		int position = random.nextInt(size);
+		AbstractInsnNode node = method.instructions.get(position);
+		
+		// Continue while the node selected is not a "fake" instruction, i.e. label, line number reference, etc. 
+		while(position < size - 1 && node.getOpcode() < 0) {
+			node = method.instructions.get(++position);
 		}
+		
+		replaceInstruction(method, position);
 	}
 	
 	/**

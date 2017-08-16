@@ -16,9 +16,7 @@ public class InsertMutator extends MaterialIntroducer implements InstructionsMut
 	 * @param method
 	 */
 	public void mutate(MethodNode method) {
-		if (random.nextFloat() < mutProb) {
-			newInstruction(method, random.nextInt(method.instructions.size() - 1)); // -1 so we don't mess with RETURN. 
-		}
+		newInstruction(method, random.nextInt(method.instructions.size() - 1)); // -1 so we don't mess with xRETURN. 
 	}
 	
 	/**

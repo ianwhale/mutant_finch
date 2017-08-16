@@ -70,7 +70,11 @@ bytecode.prob.timeout			= 5000
 bytecode.count.limit			= 5000
 
 # instruction mutator parameters
-insn.mut.allowed = true		
+insn.mut.allowed = true
+
+insn.mut.verify-mutations = true
+insn.mut.verify-tries = 1000	
+
 # If false, all mutations have the same probability
 insn.mut.custom-distrib = false
 insn.mut.deletion = 0.333

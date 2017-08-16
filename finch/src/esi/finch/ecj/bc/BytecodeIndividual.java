@@ -85,6 +85,8 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 
 	private boolean mutateInstructions;
 	private boolean useDistribution;
+	private boolean verifyMutations;
+	private int verifyTries;
 	private Map<MutatorFactory.MutationType, Double> mutationDistribution;
 
 	/**
@@ -226,7 +228,10 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 				catch (RuntimeException e) {
 					return res;
 				}
-
+				catch (AssertionError e) {
+					return res;
+				}
+				
 				// Create and fill new individual
 				res = clone();
 				res.fillGenome(merger);
@@ -249,112 +254,128 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 
 		if (species.getMutProb() > 0 &&
 				random.nextFloat() < species.getMutProb()) {
-			// New mutation method.
-			// Only clone individual and fill the new genome if mutation produces a viable offspring.
-			
-			
-			// New name (although same names are ok)
-			String name = createClassName(state.generation, thread);
-
-			AnalyzedClassNode originalClassNode = getClassNode();
-			AnalyzedMethodNode originalMethod = originalClassNode.findMethod(methodDef);
-			
-			ConstantsMutator mutator = Loader.loadClassInstance(mutConstantsClass, species.getMutProb(), random);
-
-			InstructionsMutator instructions_mutator;
-			if (useDistribution) {
-				instructions_mutator = MutatorFactory.makeMutator(random, mutationDistribution, species.getMutProb());
-			} else {
-				instructions_mutator = MutatorFactory.makeMutator(random, species.getMutProb());
+			if (verifyMutations) {
+				res = safeMutation(state, thread, species, random, res);
 			}
-			
-			AnalyzedClassNode mutantClassNode = null;
-			CodeModifier modifier = null;
-			AnalyzedMethodNode mutantMethod = null;
-			TypeVerifier verifier = null;
-			CompatibleCrossover xo = null;
-			MutationVerifier mutVerifier = null;
-			
-			int i = 0; 
-			// Attempt to mutate until we find a valid mutation.
-			do {
-				mutantClassNode = getClassNode(); // Not a reference, points to the same class but different object than original.
-				
-				try {
-					modifier = new CodeModifier(name, mutantClassNode, methodDef, mutator, instructions_mutator,
-							mutateInstructions);
-				}
-				catch (RuntimeException e) {
-					return res;
-				}
-				
-				mutantMethod = mutantClassNode.findMethod(methodDef);
-				
-				verifier = new TypeVerifier(originalClassNode, mutantClassNode);
-				xo = new CompatibleCrossover(originalMethod, mutantMethod, verifier);
-				
-				mutVerifier = new MutationVerifier(originalMethod, mutantMethod, xo);
-				
-				if (i++ > 1000) {
-					//System.out.println("Too many tries at mutation.");
-					break;
-				}
-				
-			} while(! mutVerifier.isValidMutation());
-			
-			//System.out.println("Made a good mutation!");
-			
-			// Create and fill new individual
-			res = clone();
-			res.fillGenome(modifier);
+			else {
+				res = unsafeMutation(state, thread, species, random, res);
+			}
 		}
-
+		
 		return res;
 	}
+	
+	/**
+	 * Perform a safe mutation that verifies state of the resulting individual.
+	 * 
+	 * @param state
+	 * @param thread
+	 * @param species
+	 * @param random
+	 * @param res
+	 * @return res
+	 */
+	public BytecodeIndividual safeMutation(EvolutionState state, int thread, 
+			ImmutableSpecies species, MersenneTwisterFast random, BytecodeIndividual res) {
+		// New name (although same names are ok)
+		String name = createClassName(state.generation, thread);
 
-/* OLD MUTATION METHOD. 
-	@Override 
-	public BytecodeIndividual mutate(EvolutionState state, int thread) {
-		// It is possible for individuals entering mutation pipeline
-		// to be unevaluated (if they come after crossover)
+		AnalyzedClassNode originalClassNode = getClassNode();
+		AnalyzedMethodNode originalMethod = originalClassNode.findMethod(methodDef);
+		
+		ConstantsMutator mutator = Loader.loadClassInstance(mutConstantsClass, species.getMutProb(), random);
 
-		ImmutableSpecies species = (ImmutableSpecies) this.species;
-		BytecodeIndividual res = this;
-
-		if (species.getMutProb() > 0) {
-			// New name (although same names are ok)
-			String name = createClassName(state.generation, thread);
-
-			// Mutator and code modifier
-			MersenneTwisterFast random = state.random[thread];
-			ConstantsMutator mutator = Loader.loadClassInstance(mutConstantsClass, species.getMutProb(), random);
-
-			InstructionsMutator instructions_mutator;
-			if (useDistribution) {
-				instructions_mutator = MutatorFactory.makeMutator(random, mutationDistribution, species.getMutProb());
-			} else {
-				instructions_mutator = MutatorFactory.makeMutator(random, species.getMutProb());
-			}
-
-			CodeModifier modifier;
+		InstructionsMutator instructions_mutator;
+		if (useDistribution) {
+			instructions_mutator = MutatorFactory.makeMutator(random, mutationDistribution, species.getMutProb());
+		} else {
+			instructions_mutator = MutatorFactory.makeMutator(random, species.getMutProb());
+		}
+		
+		AnalyzedClassNode mutantClassNode = null;
+		CodeModifier modifier = null;
+		AnalyzedMethodNode mutantMethod = null;
+		TypeVerifier verifier = null;
+		CompatibleCrossover xo = null;
+		MutationVerifier mutVerifier = null;
+		
+		int i = 0; 
+		// Attempt to mutate until we find a valid mutation.
+		do {
+			mutantClassNode = getClassNode(); // Not a reference, points to the same class but different object than original.
+			
 			try {
-				modifier = new CodeModifier(name, getClassNode(), methodDef, mutator, instructions_mutator,
+				modifier = new CodeModifier(name, mutantClassNode, methodDef, mutator, instructions_mutator,
 						mutateInstructions);
-			} catch (RuntimeException e) {
-				// Invalid code structure, assign minimal fitness.
-				SimpleFitness sfit = (SimpleFitness) res.fitness;
-				sfit.setFitness(state, Integer.MIN_VALUE, false);
+			}
+			catch (RuntimeException e) {
 				return res;
 			}
-
-			// Create and fill new individual
-			res = clone();
-			res.fillGenome(modifier);
-		}
-
+			
+			mutantMethod = mutantClassNode.findMethod(methodDef);
+			
+			verifier = new TypeVerifier(originalClassNode, mutantClassNode);
+			xo = new CompatibleCrossover(originalMethod, mutantMethod, verifier);
+			
+			mutVerifier = new MutationVerifier(originalMethod, mutantMethod, xo);
+			
+			if (i++ >= verifyTries) {
+				//System.out.println("Too many tries at mutation.");
+				break;
+			}
+			
+		} while(! mutVerifier.isValidMutation());
+		
+		//System.out.println("Made a good mutation!");
+		
+		// Create and fill new individual
+		res = clone();
+		res.fillGenome(modifier);
+		
 		return res;
 	}
-*/
+	
+	/**
+	 * Perform an unsafe mutation with no verification.
+	 *
+	 * @param state
+	 * @param thread
+	 * @param species
+	 * @param random
+	 * @param res
+	 * @return res
+	 */
+	public BytecodeIndividual unsafeMutation(EvolutionState state, int thread, 
+			ImmutableSpecies species, MersenneTwisterFast random, BytecodeIndividual res) {
+		// New name (although same names are ok)
+		String name = createClassName(state.generation, thread);
+
+		ConstantsMutator mutator = Loader.loadClassInstance(mutConstantsClass, species.getMutProb(), random);
+
+		InstructionsMutator instructions_mutator;
+		if (useDistribution) {
+			instructions_mutator = MutatorFactory.makeMutator(random, mutationDistribution, species.getMutProb());
+		} else {
+			instructions_mutator = MutatorFactory.makeMutator(random, species.getMutProb());
+		}
+
+		CodeModifier modifier;
+		try {
+			modifier = new CodeModifier(name, getClassNode(), methodDef, mutator, instructions_mutator,
+					mutateInstructions);
+		} catch (RuntimeException e) {
+			// Invalid code structure, assign minimal fitness.
+			SimpleFitness sfit = (SimpleFitness) res.fitness;
+			sfit.setFitness(state, Integer.MIN_VALUE, false);
+			return res;
+		}
+
+		// Create and fill new individual
+		res = clone();
+		res.fillGenome(modifier);
+		
+		return res;
+	}
 	
 	
 	/**
@@ -367,7 +388,11 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 				new Parameter("insn.mut.allowed"), true);
 		useDistribution = state.parameters.getBoolean(new Parameter("insn.mut.custom-distrib"),
 				new Parameter("insn.mut.custom-distrib"), false);
-
+		verifyMutations = state.parameters.getBoolean(new Parameter("insn.mut.verify-mutations"),
+				new Parameter("insn.mut.verify-mutations"), true);
+		verifyTries = state.parameters.getInt(new Parameter("insn.mut.verify-tries"),
+				new Parameter("insn.mut.verify-tries"), 1000);
+		
 		mutationDistribution = new HashMap<MutatorFactory.MutationType, Double>();
 		mutationDistribution.put(MutatorFactory.MutationType.DELETION,
 				state.parameters.getDouble(new Parameter("insn.mut.deletion"), new Parameter("insn.mut.deletion")));
@@ -379,6 +404,8 @@ public class BytecodeIndividual extends Individual implements ImmutableIndividua
 				state.parameters.getDouble(new Parameter("insn.mut.move"), new Parameter("insn.mut.move")));
 		mutationDistribution.put(MutatorFactory.MutationType.REPLACE,
 				state.parameters.getDouble(new Parameter("insn.mut.replace"), new Parameter("insn.mut.replace")));
+		
+		
 	}
 
 	// Creates a name for a new class (counter increment side-effect)
